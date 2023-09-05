@@ -7,3 +7,7 @@ def home(request):
 
 def contacts(request):
     return render(request, 'catalog/contacts.html')
+
+
+def product(request):
+    return render(request, 'catalog/product.html')
