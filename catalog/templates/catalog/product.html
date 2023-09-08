@@ -1,5 +1,5 @@
 {% extends 'catalog/base.html' %}
-
+{% load my_tags %}
 {% block content %}
 <div class="card mb-4 box-shadow">
     <div class="card-header">
@@ -8,8 +8,7 @@
     <div class="card-body">
         <h5 class="card-title pricing-card-title">RUR {{ object_list.price }}</h5>
         <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-            <img src="/media/{{ object_list.image }}" class="img-fluid rounder-start">
-            <li> {{ object_list.image}}</li>
+            <img src="{{ object_list.image|mediapath }}" class="img-fluid rounder-start">
             <table class="table table-striped">
                 <tr>
                     <td class="w-25">Описание</td>
