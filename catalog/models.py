@@ -34,3 +34,21 @@ class Product(models.Model):
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
         ordering = ('id',)
+
+
+class Story(models.Model):
+    title = models.CharField(max_length=100, verbose_name='заголовок')
+    slug = models.CharField(max_length=100, verbose_name='slug')
+    body = models.TextField(verbose_name='содержимое', **NULLABLE)
+    image = models.ImageField(upload_to='stories/', verbose_name='изображение', **NULLABLE)
+    create_date = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='дата создания')
+    public_flg = models.BooleanField(verbose_name='признак публикации', default=False)
+    views_count = models.IntegerField(verbose_name='количество просмотров', default=0)
+
+    def __str__(self):
+        return f'{self.title}'
+
+    class Meta:
+        verbose_name = 'статья'
+        verbose_name_plural = 'статьи'
+        ordering = ('id',)

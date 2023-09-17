@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from catalog.models import Product
+from django.views.generic import ListView, DetailView, CreateView
+from catalog.models import Product, Story
+from django.urls import reverse_lazy
 
 
 class HomeListView(ListView):
@@ -36,3 +37,16 @@ class ProductDetailView(DetailView):
 #         'title': 'Карточка продукта'
 #     }
 #     return render(request, 'catalog/product.html', context)
+
+class StoryCreateView(CreateView):
+    model = Story
+    fields = ('title', 'slug', 'body', 'image', 'public_flg', 'views_count',)
+    success_url = reverse_lazy('catalog:story_list')
+
+
+class StoryListView(ListView):
+    model = Story
+
+
+class StoryDetailView(DetailView):
+    model = Story
