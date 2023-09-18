@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from catalog.models import Product, Story
 from django.urls import reverse_lazy
 
@@ -50,3 +50,14 @@ class StoryListView(ListView):
 
 class StoryDetailView(DetailView):
     model = Story
+
+
+class StoryUpdateView(UpdateView):
+    model = Story
+    fields = ('title', 'slug', 'body', 'image', 'public_flg', 'views_count',)
+    success_url = reverse_lazy('catalog:story_list')
+
+
+class StoryDeleteView(DeleteView):
+    model = Story
+    success_url = reverse_lazy('catalog:story_list')
