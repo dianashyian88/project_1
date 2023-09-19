@@ -38,7 +38,7 @@ class Product(models.Model):
 
 class Story(models.Model):
     title = models.CharField(max_length=100, verbose_name='заголовок')
-    slug = models.CharField(max_length=100, verbose_name='slug')
+    slug = models.CharField(max_length=100, verbose_name='slug', **NULLABLE)
     body = models.TextField(verbose_name='содержимое', **NULLABLE)
     image = models.ImageField(upload_to='stories/', verbose_name='изображение', **NULLABLE)
     create_date = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='дата создания')

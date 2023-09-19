@@ -3,15 +3,16 @@
 {% block content %}
 <section class="jumbotron text-center">
     <div class="container">
-      <h1 class="jumbotron-heading">Статья "{{ object.title }}"</h1>
+      <h1 class="jumbotron-heading">Статья "{{ object.title }}" ({{ object.slug }})</h1>
     </div>
 </section>
 <div class="card mb-4 box-shadow">
     <div class="card-body">
+        <img src="{{ object.image|mediapath }}" class="img-fluid rounder-start">
         <p>
-            <img src="{{ object.image|mediapath }}" class="img-fluid rounder-start">
             {{ object.body }}
         </p>
+        <p>Просмотры: {{ object.views_count }}</p>
     </div>
 </div>
 {% endblock %}
