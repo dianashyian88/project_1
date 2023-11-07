@@ -10,15 +10,6 @@ class HomeListView(ListView):
     template_name = 'catalog/home.html'
 
 
-# def home(request):
-#     products_list = Product.objects.all()
-#     context = {
-#         'object_list': products_list,
-#         'title': 'Каталог'
-#     }
-#     return render(request, 'catalog/home.html', context)
-
-
 def contacts(request):
     context = {
         'title': 'Контакты'
@@ -30,14 +21,6 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product.html'
 
-
-# def product(request, pk):
-#     products_list = Product.objects.get(pk=pk)
-#     context = {
-#         'object_list': products_list,
-#         'title': 'Карточка продукта'
-#     }
-#     return render(request, 'catalog/product.html', context)
 
 class StoryCreateView(CreateView):
     model = Story
@@ -92,3 +75,16 @@ class StoryUpdateView(UpdateView):
 class StoryDeleteView(DeleteView):
     model = Story
     success_url = reverse_lazy('catalog:story_list')
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'category', 'price')
+    success_url = reverse_lazy('catalog:home')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)

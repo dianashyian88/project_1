@@ -1,4 +1,5 @@
 from django.db import models
+from config.settings import AUTH_USER_MODEL
 
 
 NULLABLE = {'null': True, 'blank': True}
@@ -26,6 +27,7 @@ class Product(models.Model):
     price = models.FloatField(verbose_name='цена')
     create_date = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='дата создания')
     update_date = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='дата обновления', **NULLABLE)
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец продукта', **NULLABLE)
 
     def __str__(self):
         return f'{self.name} {self.price}'
