@@ -3,6 +3,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from catalog.models import Product, Story
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
+from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 class HomeListView(ListView):
@@ -17,7 +19,7 @@ def contacts(request):
     return render(request, 'catalog/contacts.html', context)
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'catalog/product.html'
 
@@ -77,7 +79,7 @@ class StoryDeleteView(DeleteView):
     success_url = reverse_lazy('catalog:story_list')
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     fields = ('name', 'description', 'image', 'category', 'price')
     success_url = reverse_lazy('catalog:home')
@@ -88,3 +90,24 @@ class ProductCreateView(CreateView):
         self.object.save()
 
         return super().form_valid(form)
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'category', 'price',)
+    #permission_required = 'catalog.change_product'
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_product = form.save()
+            new_product.save()
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('catalog:product', args=[self.kwargs.get('pk')])
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.owner != self.request.user and not self.request.user.is_staff:
+            raise Http404
+        return self.object
