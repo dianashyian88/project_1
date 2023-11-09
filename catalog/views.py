@@ -4,7 +4,7 @@ from catalog.models import Product, Story
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
 from django.http import Http404
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 
 class HomeListView(ListView):
@@ -109,5 +109,26 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         if self.object.owner != self.request.user and not self.request.user.is_staff:
+            raise Http404
+        return self.object
+
+class ProductManagersUpdate(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Product
+    fields = ('description', 'category', 'is_published',)
+    permission_required = 'catalog.change_product'
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_product = form.save()
+            new_product.save()
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('catalog:product', args=[self.kwargs.get('pk')])
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if not self.request.user.is_staff:
             raise Http404
         return self.object

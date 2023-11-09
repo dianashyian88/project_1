@@ -28,7 +28,7 @@ class Product(models.Model):
     create_date = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='дата создания')
     update_date = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='дата обновления', **NULLABLE)
     owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='владелец продукта', **NULLABLE)
-    is_published = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=False, verbose_name='признак публикации')
 
     def __str__(self):
         return f'{self.name} {self.price}'
@@ -39,8 +39,16 @@ class Product(models.Model):
         ordering = ('id',)
         permissions = [
             (
-                'set_published',
-                'Can publish продукт'
+                'set_is_published',
+                'Can change_is_published продукт'
+            ),
+            (
+                'set_description',
+                'Can change_description продукт'
+            ),
+            (
+                'set_category',
+                'Can change_category продукт'
             )
         ]
 

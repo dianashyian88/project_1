@@ -36,7 +36,11 @@
                 <div class="btn-group">
                   {% if user.is_authenticated %}
                     <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:product' object.pk %}">View</a>
-                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:product_update' object.pk %}">Edit</a>
+                    {% if perms.catalog.change_product and user is object.owner %}
+                      <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:product_update' object.pk %}">Edit</a>
+                    {% else %}
+                      <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:managers_product_update' object.pk %}">Edit</a>
+                    {% endif %}
                   {% else %}
                     <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'users:login' %}">View</a>
                     <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'users:login' %}">Edit</a>
