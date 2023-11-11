@@ -23,7 +23,7 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c(3!9pt9m#$ipgn72df+2!q08vf+chfc!@ola1y4%v&yks-s34'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'project_1',
         'USER': 'postgres',
-        'PASSWORD': 'PoloA856TN92'
+        'PASSWORD': os.getenv('DATABASES_PASSWORD')
     }
 }
 
@@ -146,11 +146,11 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'fuckup@oscarbot.ru'
-EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-CACHE_ENABLED = os.getenv('CACHE_ENABLED') == True
+CACHE_ENABLED = os.getenv('CACHE_ENABLED').lower() in ('true', 'on', 'yes')
 if CACHE_ENABLED:
     CACHES = {
         "default": {
