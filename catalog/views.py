@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from catalog.models import Product, Story
+from catalog.models import Product, Story, Category
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from catalog.utils import get_categories_cache
 
 
 class HomeListView(ListView):
@@ -18,6 +19,13 @@ def contacts(request):
     }
     return render(request, 'catalog/contacts.html', context)
 
+
+def categories(request):
+    context = {
+        'object_list': get_categories_cache(),
+        'title': 'Все категории Чудо-магазина'
+    }
+    return render(request, 'catalog/categories.html', context)
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product

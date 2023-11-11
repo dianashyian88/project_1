@@ -9,6 +9,9 @@
       </section>
 <div class="album py-5 bg-light">
   <div class="container">
+    <div class="col-12 mb-5">
+        <a class="btn btn-outline-primary" href="{% url 'catalog:categories' %}">Перейти к категориям</a>
+      </div>
     {% if user.is_authenticated %}
       <div class="col-12 mb-5">
         <a class="btn btn-outline-primary" href="{% url 'catalog:product_form' %}">Добавить продукт</a>
